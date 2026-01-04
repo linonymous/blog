@@ -2,7 +2,7 @@
 <article class="article">
   <header class="article-header">
     <div class="container container-narrow">
-      {{ if not (eq .Section "about") }}
+      {{ if not .Params.hideDate }}
       <div class="article-meta">
         <a href="{{ printf "%s/" .Section | relURL }}" class="article-category article-category-{{ .Section }}">{{ .Section | title }}</a>
         <span class="article-meta-sep">·</span>
@@ -15,7 +15,7 @@
       {{ with .Description }}
       <p class="article-description">{{ . }}</p>
       {{ end }}
-      {{ if not (eq .Section "about") }}
+      {{ if not .Params.hideDate }}
       {{ with .Params.tags }}
       <div class="article-tags">
         {{ range . }}
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  {{ if not (eq .Section "about") }}
+  {{ if not .Params.hideDate }}
   <footer class="article-footer">
     <div class="container container-narrow">
       {{ with .Params.series }}
