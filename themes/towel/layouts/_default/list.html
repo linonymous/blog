@@ -1,51 +1,15 @@
 {{ define "main" }}
-<section class="section-header section-header-{{ .Section }}">
-  <div class="container">
-    <div class="section-header-content">
-      {{ if eq .Section "tech" }}
-      <span class="section-icon">⚙️</span>
-      {{ else if eq .Section "dev-random" }}
-      <span class="section-icon">🎲</span>
-      {{ else if eq .Section "books" }}
-      <span class="section-icon">📚</span>
-      {{ else }}
-      <span class="section-icon">📝</span>
-      {{ end }}
-      <h1 class="section-title">{{ .Title }}</h1>
-      {{ with .Description }}
-      <p class="section-description">{{ . }}</p>
-      {{ end }}
-      <p class="section-count">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</p>
-    </div>
-  </div>
-</section>
-
 <section class="posts-list">
   <div class="container">
     {{ if .Pages }}
-    <div class="posts-grid posts-grid-list">
+    <ul class="posts-simple-list">
       {{ range .Pages.ByDate.Reverse }}
-      <article class="post-card post-card-horizontal">
-        <div class="post-card-content">
-          <div class="post-card-meta">
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-            <span class="reading-time">{{ math.Round (div (countwords .Content) 200.0) }} min read</span>
-          </div>
-          <h2 class="post-card-title">
-            <a href="{{ .Permalink }}">{{ .Title }}</a>
-          </h2>
-          <p class="post-card-excerpt">{{ .Description | default .Summary | truncate 200 }}</p>
-          {{ with .Params.tags }}
-          <div class="post-card-tags">
-            {{ range first 4 . }}
-            <span class="tag">{{ . }}</span>
-            {{ end }}
-          </div>
-          {{ end }}
-        </div>
-      </article>
+      <li class="post-item">
+        <a href="{{ .Permalink }}" class="post-link">{{ .Title }}</a>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      </li>
       {{ end }}
-    </div>
+    </ul>
 
     {{ template "_internal/pagination.html" . }}
     {{ else }}
