@@ -4,12 +4,10 @@
     <div class="section-header-content">
       {{ if eq .Section "tech" }}
       <span class="section-icon">⚙️</span>
-      {{ else if eq .Section "deep-dives" }}
-      <span class="section-icon">🔬</span>
-      {{ else if eq .Section "til" }}
-      <span class="section-icon">💡</span>
-      {{ else if eq .Section "musings" }}
-      <span class="section-icon">✨</span>
+      {{ else if eq .Section "dev-random" }}
+      <span class="section-icon">🎲</span>
+      {{ else if eq .Section "books" }}
+      <span class="section-icon">📚</span>
       {{ else }}
       <span class="section-icon">📝</span>
       {{ end }}
