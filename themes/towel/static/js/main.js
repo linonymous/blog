@@ -1,5 +1,6 @@
 // ================================
-// Mindfork Theme - JavaScript
+// The Towel Theme - JavaScript
+// Don't Panic!
 // ================================
 
 (function() {
@@ -9,17 +10,18 @@
   // Theme Toggle (Dark/Light Mode)
   // ================================
 
-  const THEME_KEY = 'mindfork-theme';
+  const THEME_KEY = 'towel-theme';
   const themeToggle = document.getElementById('theme-toggle');
   const html = document.documentElement;
 
-  // Get stored theme or detect system preference
+  // Get stored theme or default to dark (space theme)
   function getPreferredTheme() {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored) {
       return stored;
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default to dark mode for the space theme
+    return 'dark';
   }
 
   // Apply theme
@@ -80,6 +82,42 @@
       }
     });
   }
+
+  // ================================
+  // Dropdown Menu Toggle
+  // ================================
+
+  const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+  dropdownToggles.forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const parent = this.parentElement;
+      const isOpen = parent.classList.contains('dropdown-open');
+
+      // Close all other dropdowns
+      document.querySelectorAll('.has-dropdown').forEach(function(dropdown) {
+        dropdown.classList.remove('dropdown-open');
+        dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
+      });
+
+      // Toggle current dropdown
+      if (!isOpen) {
+        parent.classList.add('dropdown-open');
+        this.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.has-dropdown')) {
+      document.querySelectorAll('.has-dropdown').forEach(function(dropdown) {
+        dropdown.classList.remove('dropdown-open');
+        dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
 
   // ================================
   // Reading Progress Bar

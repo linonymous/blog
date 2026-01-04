@@ -1,7 +1,7 @@
 baseURL = 'https://linonymous.in/'
 languageCode = 'en-us'
-title = 'Mindfork'
-theme = 'mindfork'
+title = 'The Towel'
+theme = 'towel'
 paginate = 10
 enableRobotsTXT = true
 enableGitInfo = true
@@ -53,8 +53,17 @@ enableGitInfo = true
     weight = 4
   [[menu.main]]
     name = 'About'
-    url = '/about/'
+    url = '#'
     weight = 5
+    hasChildren = true
+    [[menu.main.children]]
+      name = 'Blog'
+      url = '/about/blog/'
+      weight = 1
+    [[menu.main.children]]
+      name = 'Me'
+      url = '/about/me/'
+      weight = 2
 
 [outputs]
   home = ['HTML', 'RSS']
