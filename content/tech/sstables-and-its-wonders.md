@@ -1,0 +1,49 @@
+---
+title: "SSTables and Its Wonders"
+date: 2019-02-20
+description: "Exploring Sorted String Tables, LSM Trees, and how modern databases optimize for both reads and writes"
+tags: ["databases", "storage-engines", "lsm-trees", "distributed-systems"]
+---
+
+## Recap
+
+In the last blog, we mentioned about the log structured based storage engine. Where the log-structured storage segment is a sequence of key-value pairs. These pairs appear in the order that they were written and values later in the log take precedence over the values for the same key earlier in the log.
+
+## A Step Ahead...
+
+What if we modify its way of storage and store the data in sorted order of their keys?
+
+We call this format as Sorted String Table or SSTable as an abbreviation. Where we store keys in its sorted order. But wait! What about sequential writes that made Bitcask faster? You might have this doubt. Let's keep that doubt as it is for now.
+
+## Benefits with the Approach
+
+1. This would, undoubtedly, in turn, improve the performance of compaction (the process of eliminating duplicate values) and merging of the segments. Compaction would be more of a merge function in the famous MergeSort. While merging the segments, if we come across the same keys, then we choose the key with the latest occurrence over the old one.
+
+2. In order to find the data now, we no longer need an index of all the keys in memory, unlike Bitcask. Suppose, for example, you are looking for the key 'Apple', and you have the indexes for 'Animals' and 'Burpee', then you can just use file pointer of key 'Animals' and can traverse till you find 'Apple' as keys are sorted. It would still need index but not as dense as Bitcask had, not for every key. It improves the performance for range queries.
+
+3. It is possible to group the data in a range and compress it while writing it to the disk. Now key will be associated with the file pointer of the compressed block. This reduces the on-disk space.
+
+## Coming Back to Reality...
+
+The big question is during writes, how do we store keys in sorted order?
+
+Well, in our database class we are taught of B-Trees to maintain sorted order on disk. But rather than secondary storage what if we use main memory, it would be much easier. There are many data structures that help us to maintain sorted order in a feasible way. For example, red-black trees and AVL trees. These are self-balancing trees and do not get skewed over because of their unique properties. Now lets put this all in steps:
+
+- When a write comes, add it to an in-memory balanced tree data structure. This in-memory tree is often called as **memtable**.
+- When the size of memtable increases more than a threshold value (few kilobytes/megabytes), then we write it out on disk as SSTable file. This can be done efficiently as tree maintains sorted order based on the keys. This SSTable file now becomes the most recent segment of the database. While SSTable is being written to the disk, writes may continue to a new memtable instance.
+- To serve read request, we try to find the key in memtable, then the recent on-disk segment, then in the next older segment and on and on.
+- From time to time, we run merge and compaction that we talked about in the last blog. This would discard the duplicate values and combine segment files.
+
+This works great! But has a problem - if a system crashes, then the in-memory data is lost. To solve this we can keep an on-disk log of writes, not necessarily in sorted order. After the crash, when the system is up, the data is read back from the log, and the tree can be rebuilt in the same sorted order. Alas! Now it seems perfect.
+
+## LSM Trees
+
+The indexing structure we discussed above is often known as Log-structured Merge-Tree or LSM tree. LSM trees define an approach, where we have different levels in a tree. Basic LSM tree has two levels, L1 and L2. L1 is generally in-memory storage implemented using self-balancing tree data structures such as Red-Black trees and AVL trees. And L2 is present on disk and can be implemented using B-Trees or any other good data structures. Generally, data is flushed between L1 and L2 when L1 reaches a certain threshold. Where to reduce the fragmentation, we run compaction and merge algorithms, which can have different implementations in different cases. Storage engines based on compaction and merge sorted files are often called as LSM storage engines. Very famous, Lucene based Elasticsearch also keeps a mapping of text-word to documents in SSTables like sorted files, which are merged in the background as and when needed.
+
+## Optimizing Performance
+
+While reading data in SSTables based storage engines, we look up for an in-memory tree for the value, if not found then we move on to the latest segment, and then the older one and so on. What if the key provided by the user does not exist in the database? In that case, it would search from in-memory to the oldest segment present on the disk, which becomes tedious. To tackle this, we use **bloom filters**. Yes! Which we didn't notice ever but is the coolest thing on the planet when it comes to knowing if an element does not belong to the database.
+
+Bloom filter is a probabilistic data structure, it tells us that the element is either definitely not in the set or may be in the set. This improves performance and saves us from unnecessary lookups.
+
+**Fact:** A four-level B-Tree of 4 KB pages with a branching factor of 500 can store up to 256TB of information!

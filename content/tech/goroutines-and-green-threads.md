@@ -1,72 +1,75 @@
 ---
-title: "Goroutines & Green Threads: Behind the Multiplexing"
-date: 2020-05-10
-description: "Understanding how user-level threads are multiplexed over kernel threads to get the best of both worlds"
-tags: ["golang", "concurrency", "threads", "runtime"]
-slug: "goroutines-green-threads"
-draft: false
+title: "Behind the Multiplexing of User Threads over Kernel Threads: Goroutines & Green Threads"
+date: 2020-05-15
+description: "Understanding how Go achieves high concurrency by multiplexing lightweight goroutines over kernel threads"
+tags: ["golang", "concurrency", "threads", "system-design"]
 ---
 
-One of Go's most powerful features is goroutines — lightweight threads managed by the Go runtime. But how do they actually work under the hood? Let's dive into the multiplexing of user threads over kernel threads.
+## Introduction
 
-## User-Level vs Kernel-Level Threads
+I have been working on Golang for quite a time now. I explored a lot of features. The few that caught up my eye were 'Scalability' & 'Concurrency'. Scalability & Concurrency have been some of the major objectives behind the design of Golang. Let's dive in a bit.
 
-Threads are broken down into two categories:
+## Threads
 
-- **Kernel Level Threads**: Managed and scheduled by the operating system
-- **User Level Threads**: Managed by the application layer (runtime)
+A thread is the unit of execution within a process. A process can have anywhere from just one thread to many threads. On a machine, we have multiple processes running and in these processes, we have independent or dependent threads aggregating computations.
 
-The magic happens when we multiplex user-level threads over kernel-level threads — leveraging the speed of user-level threads and the scheduling capability of kernel-level threads. This gives us the best of both worlds.
+Contextually, these threads are further broken down into two types, namely **User-Level Threads** and **Kernel Level Threads**. The basic difference between these threads is that the kernel-level threads are managed, operated, and scheduled by the operating system (kernel), and user-level threads are managed, operated, and scheduled by the application layer.
 
-## Why Goroutines Are Efficient
+Just to have more understanding about them, let's list down the advantages and disadvantages!
 
-Goroutines have several advantages over traditional OS threads:
+## Advantages of Kernel Threads
 
-### 1. Low Memory Footprint
+- The kernel knows the whereabouts of kernel threads. Thus, Kernel can schedule these threads optimally, i.e. the scheduler can give priority to a process with a large number of threads over the process with comparatively fewer threads.
+- Kernel threads are secure and are managed by native OS.
 
-Goroutines start with just a few kilobytes of stack space (around 2KB), compared to the typical 1-2MB for OS threads. This means on 8GB RAM, you can have around a **million goroutines** running!
+## Disadvantages of Kernel Threads
 
-### 2. Cheap Context Switching
+- Kernel threads are very inefficient, these threads take a lot of time during a context switch. It involves changing a large set of processor registers that define the current memory map and permissions. It also evicts some or all of the processor cache.
+- Kernel threads are very slow. These threads are spawned by the kernel using system calls, which are hefty when it comes to execution speed. Thus, kernel threads are slow to start/stop.
 
-Context switch cost is minimal because:
-- Scheduling is **cooperative** and **non-preemptive**
-- Goroutines yield control periodically when they are idle or logically blocked
-- The switch between goroutines happens only at well-defined points when an explicit call is made to the Go Runtime Scheduler
+## Advantages of User Threads
 
-### 3. M:N Scheduling
+- Well, well, first thing first, you can implement your own user threads, even when the native OS does not support any concurrency.
+- User threads are comparatively very cheap to spawn and consume less memory than the kernel threads. Creating a new thread, switching between threads & synchronization of these threads are done via procedure calls and have no kernel involvement. Thus, user threads are faster than kernel threads.
 
-Go uses an M:N scheduler where:
-- **M** threads (OS threads) run on **P** processors
-- **G** goroutines are multiplexed over the M threads
+## Disadvantages of User Threads
 
-In Golang, the `GOMAXPROCS` environment variable defines the number of processors that will contribute to execution.
+- User-level threads are not optimized for scheduling, the reason being, kernel scheduler is way more optimized than the custom schedulers.
 
-## The Go Scheduler Architecture
+Looking at the pros and cons, what if we leverage the speed of user-level threads and the scheduling capability of kernel-level threads? Thus, to get the best of both worlds, it's better to **multiplex the user-level threads** (lightweight, easy to create, but not known to the kernel so poor scheduling) **over kernel-level threads** (good at concurrency and scheduling, but inefficient for creation, maintenance & context switch).
 
-### Local Run Queue (LRQ)
+## Underhood Goroutines Concurrency
 
-Every processor has a Local Run Queue. Goroutines in the LRQ are picked up one by one by the scheduler to be scheduled on the owner processor.
+- **P**: Number of Processors
+- **M**: Number of threads (OS level)
+- **G**: Number of Goroutines (user level, green threads)
 
-### How It Works
+There are M threads running on P processors and G threads (goroutines) are multiplexed over the M threads (kernel level).
 
-1. When you create a goroutine with `go func()`, it's placed in a run queue
-2. The scheduler picks goroutines from the queue and assigns them to available OS threads
-3. When a goroutine blocks (I/O, channel operation, etc.), the scheduler moves it aside and picks another goroutine
-4. This happens transparently, without OS kernel intervention
+Thus G goroutines need to be scheduled on M OS threads which are internally scheduled over P processors. In Golang, the **GOMAXPROCS** environment variable depicts the number of processors (cores in the system) that will be contributing to the execution of these threads. Note that, **GOMAXPROCS** set to **1** means no parallelism. Given that **P <= GOMAXPROCS**.
 
-## Practical Implications
+Every processor has a **Local Run Queue** i.e. **LRQ**. Goroutines in LRQ are picked up one by one by the scheduler to schedule them on the owner processor of LRQ. Above this, there is a **GLOBAL RUN QUEUE** i.e. **GRQ**. GRQ is shared across all threads. As LRQ is local, the scheduler threads do not need locks over it, i.e. LRQ doesn't need to be synchronized as they are accessed by only one thread. Whereas, GRQ needs locking as this queue of tasks is shared across all the processor threads.
 
-Understanding this model helps you:
+Whenever the scheduler does not find any thread on LRQ, then it performs **thread stealing**, which means it randomly accesses the LRQs of other processors (now LRQ needs locking) and steals half of the workload.
 
-- Write more efficient concurrent code
-- Avoid common pitfalls like spawning too many goroutines that actually block
-- Tune `GOMAXPROCS` for your specific workload
-- Debug concurrency issues more effectively
+If in case, there are no threads to steal from other LRQs, the scheduler gets the workload from GRQ.
 
-## Conclusion
+## Advantages of Goroutines
 
-Goroutines demonstrate elegant engineering — they provide the simplicity of lightweight threads with the power of kernel-level scheduling. This is why Go excels at building concurrent systems.
+- Less memory consumption (few kilobytes per goroutine)
+- Less setup and teardown cost (user-space threads)
+- Context switch cost is less as the scheduling is cooperative and non-preemptive. In cooperative scheduling, there is no concept of the scheduler time slice. In such scheduling, Goroutines yield the control periodically when they are idle or logically blocked in order to run multiple goroutines concurrently. The switch between goroutines happens only at well-defined points, when an explicit call is made to the Go Runtime Scheduler. And those points are:
+  - Send/Receive calls over the channels, as it involves the blocking calls
+  - Go statement, thus it is not guaranteed that the new routine will be scheduled immediately.
+  - Blocking syscalls for the file or network operations.
+  - After being stopped for a garbage collection cycle.
 
----
+## Fun Fact
 
-*When in doubt, spawn a goroutine. Just kidding — think about it first.*
+Considering 2KB size of single goroutine and 8GB of RAM, you can run:
+
+- 500 goroutines per 1MB
+- 500,000 goroutines per 1GB
+- 4,000,000 goroutines per 8GB
+
+Given the calculation, on 8GB RAM, we can have around **a million goroutines** running!
