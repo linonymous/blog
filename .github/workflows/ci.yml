@@ -1,0 +1,48 @@
+# CI Build Check for Pull Requests
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+# Default to bash
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.121.1
+    steps:
+      - name: Install Hugo CLI
+        run: |
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Build with Hugo
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_ENV: production
+        run: |
+          hugo \
+            --gc \
+            --minify
+
+      - name: Verify build output
+        run: |
+          if [ -d "public" ] && [ "$(ls -A public)" ]; then
+            echo "Build successful - public directory contains files"
+            ls -la public/
+          else
+            echo "Build failed - public directory is empty or missing"
+            exit 1
+          fi
