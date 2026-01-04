@@ -1,0 +1,99 @@
+<div class="post-body entry-content float-container" id="post-body-1613222869268721385">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div style="text-align: justify;">
+It's been quite a while after the first blog about <b>Storage Engines</b>. But after that blog, the thing that hit me was how the databases like the great <b>MySQL</b> and the legend <b>PostgreSQL</b> works(subjective). While exploring <b>MySQL</b> I came across the famous, and default storage engine of <b>MySQL</b>, i.e. <b>InnoDB</b>.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+Whenever you create a table without mentioning <b>'ENGINE'</b> attribute in a query, you are telling <b>MySQL</b> to go and use <b>InnoDB</b> to create the table. Well, there are many amazing/awesome/mind-forking storage engines that can be used instead of <b>InnoDB</b>. But, as <b>InnoDB</b> is the default, we should not hesitate to explore it.</div>
+<div style="text-align: justify;">
+<br/></div>
+<h3 style="text-align: justify;">
+What is InnoDB?</h3>
+<div>
+<div style="text-align: justify;">
+              <b>InnoDB</b> is the general-purpose storage engine that balances high reliability and high performance. Reliability is the fault tolerance quotient of the system. In <b>MySQL 8.0</b>, <b>InnoDB</b> is the default <b>MySQL</b> storage engine, unless you configure it with other storage engines.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<h3 style="text-align: justify;">
+What the hell InnoDB has?</h3>
+<div>
+<ul style="text-align: left;">
+<li style="text-align: justify;"><b>B-Tree indexes (ugh! We already know that!)</b></li>
+</ul>
+<ul style="text-align: left;">
+<li style="text-align: justify;"><b>The backup/point in time recovery</b>  (huh!)    </li>
+</ul>
+<div>
+<div style="text-align: justify;">
+<b>MySQL Enterprise Backup</b> product can be used to take backups of entire instances or selected databases, tables, etc. This supports <b>incremental and compressed</b> backups. Physical backup helps fast restore than logical backup. With <b>'mysqldump'</b>, InnoDB tables can be enabled for an online auto-backup using backup policies. Well, there are many ways and products for backup. The important point is, InnoDB supports that. :)</div>
+</div>
+</div>
+<div>
+<ul style="text-align: left;">
+<li style="text-align: justify;"><b>Clustered Index</b> (whoa!)</li>
+</ul>
+<div>
+<div style="text-align: justify;">
+The clustered index defines the order in which data is <b>physically</b> stored in a table. Table data can be stored only in one way, thus, there can be <b>only one</b> clustered index per table. In SQL server, the primary key of the table automatically creates a clustered index on that particular column.</div>
+</div>
+</div>
+<div>
+<div style="text-align: justify;">
+Having student data in the table, and <b>'roll_number'</b> as the primary key, would force the database to create a clustered index based on <b>'roll_number'</b> attribute of the table. </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/>
+Custom clustered indexes can also be created. You can use <b>'first_name'</b> and <b>'last_name'</b> to create a clustered index. This means, first the data is sorted with <b>'first_name'</b>, if <b>'first_name'</b> comes out to be the same for two or more rows, those rows are sorted using <b>'last_name'</b>. These are also called as <b>COMPOSITE</b> indexes.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/>
+The non-clustered index doesn't sort the physical data inside the table. Perhaps, it <b>creates a non-clustered index</b> and stores it at one place, whereas the real data is stored in another place. This is similar to the Index in the book and the content. The index contains column values on which the index is created and the address of the record that the column belongs to. It's important to note here that, as table contents are stored at another place, they can get stored in some order with respect to the associated clustered index if it exists. Whereas, the non-clustered index is stored in a sorted order of the values the non-clustered attribute has. Generally, clustered indexes are faster than non-clustered indexes since they do not involve extra efforts for lookups.</div>
+</div>
+<div>
+<ul style="text-align: left;">
+<li style="text-align: justify;"><b>Compressed Data</b> (Yes! Com-press it!)</li>
+<li style="text-align: justify;"><b>Data Caches</b></li>
+</ul>
+<div>
+<div style="text-align: justify;">
+InnoDB has a <b>buffer pool</b>, where it keeps all caches to tables and indexes so as to speed up the query processing. On dedicated servers, up to <b>80% of physical memory</b> is often assigned to the buffer pool. </div>
+</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/>
+The <b>buffer pool</b> is divided into the pages. The cache management is implemented using a linked list of pages. And the data that is rarely used is aged out of the cache using a variation of <b>LRU algorithm</b>. Buffer pool list is divided in <b>5/8</b> and <b>3/8</b> parts. The 5/8 part is the new sub-list and 3/8 part contains the old pages. When a new page is inserted, it is inserted at the end of the 5/8 part and then moved up/down based upon its access temperature. Whereas, the pages at the end of the pool list are thrown out as they age out.<br/>
+<br/>
+<ul>
+<li><b>Adaptive Hash Index</b></li>
+</ul>
+<div>
+This is <b>in-memory hash index</b>, just like what we have seen in case of SSTables, the in-memory index which contains pointers to the data on the disk. These indexes are fixed in numbers and they are adaptive based upon the frequency of access of the data.<br/>
+<br/>
+<h4>
+<ul>
+<li>MVCC ( <span style="font-weight: 400;">What? </span>)</li>
+</ul>
+<div>
+MVCC<span style="font-weight: normal;"> stands for </span>multi-version concurrency control<span style="font-weight: normal;">. While handling race conditions concurrency control comes in picture. The concurrency control can be done in one of the following ways.</span><br/>
+<span style="font-weight: normal;"><br/></span>
+<span style="font-weight: normal;">- Avoid the conflicts by employing a pessimistic locking mechanism. (Ex. </span>Two-Phase locking<span style="font-weight: normal;">)</span></div>
+<div>
+<span style="font-weight: normal;">- OR Allow conflicts to occur, but you need to detect them using an optimistic locking mechanism. (Ex. Logical clock, MVCC)</span><br/>
+<span style="font-weight: normal;"><br/></span></div>
+<div>
+<span style="font-weight: normal;">In the case of </span>2 Phase Locking<span style="font-weight: normal;"> (2PL), every read requires a </span>shared lock<span style="font-weight: normal;">, while a write operation requires taking an </span>exclusive lock<span style="font-weight: normal;">. A </span>shared lock<span style="font-weight: normal;"> block writes but allows reads. Whereas </span>exclusive lock<span style="font-weight: normal;"> blocks read as well as writes. And due to this locking mechanism, the contention is incurred.  What if reads do not block writes and writes does not block reads. Well, </span>MVCC<span style="font-weight: normal;"> does that. Researchers have come up with this approach, where Readers read the data that has been previously committed to the database, not the recent update. For example, the server has a </span>"cnt"<span style="font-weight: normal;"> variable set to </span>8<span style="font-weight: normal;">. Now, </span>user A<span style="font-weight: normal;"> issues read request and it receives value </span>8<span style="font-weight: normal;">. While </span>user B<span style="font-weight: normal;"> issues a write request and change the </span>cnt<span style="font-weight: normal;"> to </span>10<span style="font-weight: normal;">. Now, </span>user A<span style="font-weight: normal;"> again issues read request, it still gets value as </span>8<span style="font-weight: normal;">, because </span>user B<span style="font-weight: normal;"> has not committed on the value </span>10<span style="font-weight: normal;"> as of now. Now, </span>user B<span style="font-weight: normal;"> commits the changes. And now </span>user A<span style="font-weight: normal;">, as well as </span>user B<span style="font-weight: normal;"> issues, read requests, both gets the updated value as </span>10<span style="font-weight: normal;">. As simple as that. :) </span><br/>
+<span style="font-weight: normal;"><br/></span>
+<span style="font-weight: normal;">Conclusion: Storage engines of the databases you are using should be learned and understood before using in production. Every storage engine has a purpose. Make sure your product is aligned to the purpose of the storage engine you are using ;)</span></div>
+</h4>
+</div>
+</div>
+</div>
+</div>
+</div>

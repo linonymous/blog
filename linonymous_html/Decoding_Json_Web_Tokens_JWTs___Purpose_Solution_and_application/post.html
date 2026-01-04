@@ -1,0 +1,311 @@
+<div class="post-body entry-content float-container" id="post-body-4414407937122387299">
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<h3 style="text-align: justify;">
+<span style="font-weight: 400;">Well, I have used a bunch of user authentication and authorization web applications in my tenure on the Internet. And its the time, while working on one of the related projects, I was introduced to this amazing term "JWT".</span></h3>
+<h3 style="text-align: justify;">
+<span style="font-weight: normal;">And this is how my journey of exploration began!</span></h3>
+<h3 style="text-align: justify;">
+What is JSON Web Token(JWT)?</h3>
+<div>
+<div style="text-align: justify;">
+As defined on the official website, on an abstract level, <a href="https://jwt.io/" target="_blank">JWT</a> is a standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. 😐 If you got it, skip the blog! If you are still reading, buckle up the belts, time to dissect it further!</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+Let's understand why do we need it in the first place!</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>HTTP</b> as per the design is a stateless protocol. This means the server while serving a request does not know anything about the previous request. Thus, for applications which majorly relies on user authentication and authorization suffers a big problem.<br/>
+<br/>
+<b>Pre-context | Authorization vs Authentication: </b>Well, to understand authentication and authorization, here goes the example, your employee ID authenticates you as a valid employee of the company, whereas your designation authorizes you for the work you are allowed to perform in the company. A software developer is not authorized to take the complex business decision as that of the authorized CEO. </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>Problem (due to statelessness of HTTP): </b>How would the server know if the authenticated user is performing the authorized operation. For example, once you sign-in on Facebook(in one API call), how would the Facebook server know that the operation(the next API call) should be performed on behalf of you, as the same user who logged in.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+Well, Since the evolution of HTTP, many solutions to this problem have shown up.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>Solution A</b>: Naive way is to store credentials on a browser, obviously in the secure format(base64 encoded :P ), and send them along with every request. Well, well, mostly, credentials are stored in the database on the server(not the actual credentials but the hashed ones), thus, for every request, you would need to open a database connection, make a read request, and close it. Apart from this, if the application is dealing with multiple requests on the same table, locking and a significantly huge number of requests would increase API latencies and make it worse. </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>Solution B</b>: After some period of time, some people came up with a solution with <b>server-side sessions</b>. In this solution, the credentials are verified when a user signs in. After the operation, the server issues a session ID for a particular user and saves it in memory. And, after this, with every request client will send the session-ID along with the request. All sorted! Right? </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>Nope!</b> Modern high scale applications, generally involve, the load balancer at the front and bunch of servers serving the content at the back. Load balancer, distributes the upcoming requests uniformly across the servers, so as to minimize the hot-spot error (only one server ends up serving all the requests and rest of the servers sits idle.) </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+Well, in this kind of application, consider, the load balancer routes the first request to server A, which authenticates the user, saves and returns the session ID back to the user. And the second request is routed to server B, who has not been aware of the session ID. Server B has no idea who this user is!</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+People came up with a solution to this problem too.</div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>1. Synchronize sessions</b> between servers, which is overhead and an undifferentiated heavy lifting.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+<b>2. Use common key/value store/database</b>, adds up another component but still with solutions like Redis and Memcached, it can be done.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+If you observed, here we are just trying to add statefulness in the stateless nature of HTTP in some way or another. Well, there is one more way, what if we embrace the stateless nature of <b>HTTP. </b>For this, we need to look out for the way!</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+What if, when a user signs in, we give the user a <b>token</b> which signifies the authenticated user. Let us lay down some objectives as per our understanding.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+<b>Objectives:</b></div>
+<div style="text-align: justify;">
+<br/></div>
+<ul style="text-align: left;">
+<li style="text-align: justify;">The token should uniquely identify the user.</li>
+<li style="text-align: justify;">The token should be generated by a valid server, i.e. validation of token should be done for every request. (makes it lesser prone to phishing attacks)</li>
+<li style="text-align: justify;">The token should be secured and should not be prone to modifications.</li>
+<li style="text-align: justify;">The token should not contain any private information, as we want this token should be the part of every API call, user information becomes more vulnerable.</li>
+</ul>
+</div>
+<div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+The first objective can be easily achieved via creating a unique hash of user-specific information with a hashing algorithm using a secret key only known to the assigning authority. Let's name this field which signifies the identity of the user as UID and it will be the part of the token. And let's also consider, for flexibility, some user metadata should also be the part of the token.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+The second objective is to validate if the token issued to the user is issued by the authorized issuer(server). Well, to comply with this objective, we have been using digital signatures for a while now and it seems perfect for this purpose. To explain, a digital signature is one, where the sender, encrypts the data with its own private key, and the receiver can decrypt it with the sender's public key(considering asymmetric encryption). Another advantage of the digital signature is, documents can not be spoiled or modified. Thus, our third objective is also achieved. So, till now, we know, </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+- the token has UID and user metadata.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+- the token is digitally signed by the issuer.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/>
+And as we know, when we use a digital signature, we include a hash of the document in the document itself so that, the receiver can validate the digital signature. Thus, the second part of the token is known as a signature.<br/>
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+Does this raise issues? No! The common question might be what if somebody who modifies the token also modifies the signature. Well, this is impossible, as the signature can only be generated with the private key of the sender. If somebody steals the private key, game is over! :P</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+Now, the token has</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/>
+<ul>
+<li>UID and user metadata </li>
+<li>Signature</li>
+</ul>
+</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+JWT standards, suggests combining the user-specific information into a field called payload. It's better to have one field for all the data for session maintenance, to enforce standards on the number and names of the fields in the token. Now, we have Payload and Signature in the token.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>Are we all done?</b></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+Let's go back a bit, and check if it will work in case of larger-scale applications.</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+Server A issues a token to a user, signs with its own private key and includes the hash of the token in the token itself. Now, the user makes another request which is received by the Server Z. Now, to validate the token, server Z needs to decrypt the token with server A's public key. This raises lots of doubts and questions. </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+How does server Z know the type of algorithm is been used to generate/sign the JWT token? if it is an asymmetric algorithm, what is the public key of the issuer of the token(just to verify if the issuer has really signed it or not)?  </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+While keeping this in mind, consider an application running with thousands of instances in the backend, what if the hashing algorithm used by some of the instances is different than others(for security reasons :P)? in our case, How does the server Z know what algorithm server A has used while signing the token, so as to decrypt it and validate it against the signature in the token. </div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<b>Do you see the problem there?</b></div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+<div style="text-align: justify;">
+As a solution to this problem, we include another field in the token named as the header. Whenever a server issues a token, it adds up the fields such as the name of the hashing algorithm used.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+Till now we have the following fields:</div>
+<div style="text-align: justify;">
+<br/>
+<ul>
+<li>Header</li>
+<li>Payload</li>
+<li>Signature</li>
+</ul>
+</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+Yes! We now know the algorithm which is been used. There are two types of cryptography algorithms, symmetric and asymmetric. In symmetric, both the sender &amp; receiver shares the common key. Whereas, in the case of asymmetric, a private key is used to encrypt and a public key is used to decrypt. Later one is more secure for obvious reasons.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+JWT often uses HS256, symmetric algorithm, or RS256, asymmetric algorithm. Now, to validate the JWT token, the server needs to know the key to decrypt and validate the JWT token. In the case of HS256, the secret key with which token was signed by the issuer needs to be known, and in case of RS256, the public key of the issuing server must be known.</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+To solve this problem, there are ways. And these ways can be more application-specific. For HS256, share the secret key with application servers, or include a riddle in the token which would give the secret key. Or for, RS256, the token should have a way to get the respective public key of the issuing server(AWS Cognito has some awesome method for that, check it out).</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+Now let's go through the event flow:</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+1) User A signs into the system:</div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+  Application server A generates a token with RS256 algorithm as follows:</div>
+<div style="text-align: justify;">
+<ul>
+<li>header = { alg : "RS256" }</li>
+<li style="text-align: left;">payload = { userid : "xoxoxo$$##",                                                                                                iss : "www.issuing-server.com/serverA-ID" }</li>
+<li style="text-align: left;">signature = Hash(alg = RS256, data = base64(header) + "." + base64(payload), secret_key = private-key-serverA)</li>
+<li>JWT Token = base64(header) + "." + base64(payload) + "." + base64(signature)</li>
+</ul>
+</div>
+<div style="text-align: justify;">
+2) User A performs an operation, server B serves the request. The request includes the JWT token in it.</div>
+<div style="text-align: justify;">
+<ul>
+<li>Server B decodes the token using the base64 algorithm.</li>
+<li>Server B now reads the "iss" field in payload, this iss field has a link which provides the public key of the issuer of the token i.e. Server A.</li>
+<li>Server B now validates the signature with the public key of the server A.</li>
+<li style="text-align: left;">calculated_hash = Hash(alg = RS256, data = base64(header) + "." + base64(payload), secret_key = public-key-serverA)</li>
+<li>Server B now matches the calculated Hash with the signature, if it matches then it is a valid JWT token if it does not, means it is been modified or exploited.</li>
+</ul>
+</div>
+<div style="text-align: justify;">
+  </div>
+<div style="text-align: justify;">
+3) Server B serves the request. :)<br/>
+<br/>
+Of course, If somebody steals the token of a user, the hacker can exploit the security and information associated with a user, but it is less likely to happen. As most of the websites we see nowadays are secured over SSL. Thus sniffing is less likely to happen. Above that, the issuer also appends the time in the token, for which the JWT token is valid. When the time is reached, JWT token becomes invalid and the user is alotted with a new JWT token.<br/>
+<br/></div>
+<div style="text-align: justify;">
+<br/></div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+</div>
+<div>
+<div style="text-align: justify;">
+<br/></div>
+</div>
+<div>
+</div>
+</div>
+</div>
