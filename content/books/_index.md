@@ -21,7 +21,7 @@ layout: "books"
 |------|--------|
 | [Atmamun](https://www.amazon.com/Atmamun-achieving-Himalayan-Swamis-freedom/dp/1532762720) | Kapil Gupta |
 | [Norwegian Wood](https://www.goodreads.com/book/show/11297.Norwegian_Wood) | Haruki Murakami |
-| [The Hitchhiker's Guide to the Galaxy](https://www.goodreads.com/book/show/386162.The_Hitchhiker_s_Guide_to_the_Galaxy) | Douglas Adams |
+| [The Hitchhiker's Guide to the Galaxy Volume 1](https://www.goodreads.com/book/show/386162.The_Hitchhiker_s_Guide_to_the_Galaxy) | Douglas Adams |
 | [System Design Interview](https://www.goodreads.com/book/show/54109255-system-design-interview-an-insider-s-guide) | Alex Xu |
 
 ### 2024
