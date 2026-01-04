@@ -1,0 +1,13 @@
+# Theme metadata
+name = "Mindfork"
+license = "MIT"
+licenselink = "https://github.com/linonymous/mindfork-theme/blob/main/LICENSE"
+description = "A custom Hugo theme for the Mindfork blog - clean, minimal, developer-focused"
+homepage = "https://linonymous.in"
+tags = ["blog", "minimal", "dark-mode", "responsive", "developer"]
+features = ["dark-light-mode", "responsive", "syntax-highlighting", "reading-progress"]
+min_version = "0.121.1"
+
+[author]
+  name = "Linonymous"
+  homepage = "https://linonymous.in"

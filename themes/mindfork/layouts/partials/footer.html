@@ -1,0 +1,38 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          <span class="logo-icon">🧠</span>
+          <span class="logo-text">Mindfork</span>
+        </a>
+        <p class="footer-tagline">{{ .Site.Params.tagline }}</p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="/tech/">Tech</a></li>
+            <li><a href="/deep-dives/">Deep Dives</a></li>
+            <li><a href="/til/">TIL</a></li>
+            <li><a href="/musings/">Musings</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://twitter.com/{{ .Site.Params.twitter }}" target="_blank" rel="noopener">Twitter</a></li>
+            <li><a href="https://github.com/{{ .Site.Params.github }}" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="/index.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ now.Year }} {{ .Site.Params.author }}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
