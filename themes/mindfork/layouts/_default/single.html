@@ -3,7 +3,7 @@
   <header class="article-header">
     <div class="container container-narrow">
       <div class="article-meta">
-        <a href="/{{ .Section }}/" class="article-category article-category-{{ .Section }}">{{ .Section | title }}</a>
+        <a href="{{ printf "%s/" .Section | relURL }}" class="article-category article-category-{{ .Section }}">{{ .Section | title }}</a>
         <span class="article-meta-sep">·</span>
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
         <span class="article-meta-sep">·</span>
@@ -16,7 +16,7 @@
       {{ with .Params.tags }}
       <div class="article-tags">
         {{ range . }}
-        <a href="/tags/{{ . | urlize }}/" class="tag">{{ . }}</a>
+        <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}" class="tag">{{ . }}</a>
         {{ end }}
       </div>
       {{ end }}

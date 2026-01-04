@@ -2,7 +2,7 @@
   <div class="container">
     <div class="footer-content">
       <div class="footer-brand">
-        <a href="/" class="footer-logo">
+        <a href="{{ "" | relURL }}" class="footer-logo">
           <span class="logo-icon">🧠</span>
           <span class="logo-text">Mindfork</span>
         </a>
@@ -13,10 +13,10 @@
         <div class="footer-section">
           <h4>Categories</h4>
           <ul>
-            <li><a href="/tech/">Tech</a></li>
-            <li><a href="/deep-dives/">Deep Dives</a></li>
-            <li><a href="/til/">TIL</a></li>
-            <li><a href="/musings/">Musings</a></li>
+            <li><a href="{{ "tech/" | relURL }}">Tech</a></li>
+            <li><a href="{{ "deep-dives/" | relURL }}">Deep Dives</a></li>
+            <li><a href="{{ "til/" | relURL }}">TIL</a></li>
+            <li><a href="{{ "musings/" | relURL }}">Musings</a></li>
           </ul>
         </div>
 
@@ -25,7 +25,7 @@
           <ul>
             <li><a href="https://twitter.com/{{ .Site.Params.twitter }}" target="_blank" rel="noopener">Twitter</a></li>
             <li><a href="https://github.com/{{ .Site.Params.github }}" target="_blank" rel="noopener">GitHub</a></li>
-            <li><a href="/index.xml">RSS</a></li>
+            <li><a href="{{ "index.xml" | relURL }}">RSS</a></li>
           </ul>
         </div>
       </div>
