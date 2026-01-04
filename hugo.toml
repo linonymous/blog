@@ -15,7 +15,7 @@ enableGitInfo = true
 
 [permalinks]
   tech = '/tech/:slug/'
-  deep-dives = '/deep-dives/:slug/'
+  dev-random = '/dev-random/:slug/'
 
 [taxonomies]
   category = 'categories'
@@ -38,8 +38,8 @@ enableGitInfo = true
     url = '/tech/'
     weight = 1
   [[menu.main]]
-    name = 'Deep Dives'
-    url = '/deep-dives/'
+    name = '/dev/random'
+    url = '/dev-random/'
     weight = 2
   [[menu.main]]
     name = 'Books'
