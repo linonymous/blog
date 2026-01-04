@@ -52,30 +52,4 @@
     </div>
   </div>
 </section>
-
-<section class="recent-posts">
-  <div class="container">
-    <h2 class="section-title">Recent Posts</h2>
-    <div class="posts-grid">
-      {{ $pages := where .Site.RegularPages "Section" "!=" "about" }}
-      {{ range first 6 $pages.ByDate.Reverse }}
-      <article class="post-card">
-        <div class="post-card-meta">
-          <span class="post-category post-category-{{ .Section }}">{{ .Section | title }}</span>
-          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-        </div>
-        <h3 class="post-card-title">
-          <a href="{{ .Permalink }}">{{ .Title }}</a>
-        </h3>
-        <p class="post-card-excerpt">{{ .Description | default .Summary | truncate 150 }}</p>
-        <div class="post-card-tags">
-          {{ range first 3 .Params.tags }}
-          <span class="tag">{{ . }}</span>
-          {{ end }}
-        </div>
-      </article>
-      {{ end }}
-    </div>
-  </div>
-</section>
 {{ end }}

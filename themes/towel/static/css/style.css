@@ -810,6 +810,11 @@ img {
   backdrop-filter: blur(4px);
 }
 
+[data-theme="light"] .category-card {
+  background: var(--color-bg-secondary);
+  backdrop-filter: none;
+}
+
 .category-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
@@ -865,6 +870,11 @@ img {
   border: 1px solid var(--color-border);
   transition: all var(--transition-normal);
   backdrop-filter: blur(4px);
+}
+
+[data-theme="light"] .post-card {
+  background: var(--color-bg);
+  backdrop-filter: none;
 }
 
 .post-card:hover {
@@ -1270,6 +1280,11 @@ img {
   border-top: 1px solid var(--color-border);
   padding: var(--spacing-3xl) 0 var(--spacing-xl);
   backdrop-filter: blur(4px);
+}
+
+[data-theme="light"] .footer {
+  background: var(--color-bg-secondary);
+  backdrop-filter: none;
 }
 
 .footer-content {
