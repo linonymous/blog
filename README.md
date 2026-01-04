@@ -2,7 +2,7 @@
 
 > I write, so that I may learn.
 
-A personal technical blog built with [Hugo](https://gohugo.io/) and hosted on GitHub Pages.
+This is migration of existing linonymous.in blog to github pages, all entirely using ClaudeCode.
 
 ## Quick Start
 
