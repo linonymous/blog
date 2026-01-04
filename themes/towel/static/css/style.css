@@ -1,28 +1,29 @@
 /* ================================
-   Mindfork Theme - Custom Styles
+   The Towel Theme - Custom Styles
+   Don't Panic!
    ================================ */
 
-/* CSS Variables - Light Mode (Default) */
+/* CSS Variables - Light Mode */
 :root {
-  /* Colors */
-  --color-bg: #fafaf9;
-  --color-bg-secondary: #f5f5f4;
-  --color-bg-tertiary: #e7e5e4;
-  --color-text: #1c1917;
-  --color-text-secondary: #57534e;
-  --color-text-tertiary: #78716c;
-  --color-border: #d6d3d1;
+  /* Colors - Space themed */
+  --color-bg: #f0f4f8;
+  --color-bg-secondary: #e2e8f0;
+  --color-bg-tertiary: #cbd5e1;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #64748b;
+  --color-border: #cbd5e1;
 
-  /* Accent Colors */
-  --color-accent: #0d9488;
-  --color-accent-hover: #0f766e;
-  --color-accent-light: #ccfbf1;
+  /* Accent Colors - Cosmic */
+  --color-accent: #6366f1;
+  --color-accent-hover: #4f46e5;
+  --color-accent-light: #e0e7ff;
 
-  /* Category Colors */
+  /* Category Colors - Nebula inspired */
   --color-tech: #06b6d4;
   --color-tech-light: #cffafe;
-  --color-deep-dives: #8b5cf6;
-  --color-deep-dives-light: #ede9fe;
+  --color-deep-dives: #a855f7;
+  --color-deep-dives-light: #f3e8ff;
   --color-til: #f59e0b;
   --color-til-light: #fef3c7;
   --color-musings: #ec4899;
@@ -63,28 +64,144 @@
   --radius-full: 9999px;
 }
 
-/* Dark Mode */
+/* Dark Mode - Deep Space Theme (Default) */
 [data-theme="dark"] {
-  --color-bg: #1c1917;
-  --color-bg-secondary: #292524;
-  --color-bg-tertiary: #44403c;
-  --color-text: #fafaf9;
-  --color-text-secondary: #a8a29e;
-  --color-text-tertiary: #78716c;
-  --color-border: #44403c;
+  --color-bg: #0a0a1a;
+  --color-bg-secondary: #12122a;
+  --color-bg-tertiary: #1a1a3a;
+  --color-text: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+  --color-border: #2a2a4a;
 
-  --color-accent: #2dd4bf;
-  --color-accent-hover: #5eead4;
-  --color-accent-light: #134e4a;
+  --color-accent: #818cf8;
+  --color-accent-hover: #a5b4fc;
+  --color-accent-light: #312e81;
 
   --color-tech-light: #164e63;
-  --color-deep-dives-light: #4c1d95;
+  --color-deep-dives-light: #581c87;
   --color-til-light: #78350f;
   --color-musings-light: #831843;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+}
+
+/* ================================
+   Space Background - Stars & Comet
+   ================================ */
+
+.space-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+[data-theme="light"] .space-bg {
+  display: none;
+}
+
+/* Stars layers */
+.stars, .stars2, .stars3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat;
+}
+
+.stars {
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 230px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 370px 60px, #fff, transparent),
+    radial-gradient(2px 2px at 450px 200px, rgba(255,255,255,0.8), transparent);
+  background-size: 500px 300px;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+.stars2 {
+  background-image:
+    radial-gradient(1px 1px at 50px 100px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 150px 50px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 250px 180px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 350px 90px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 420px 250px, rgba(255,255,255,0.6), transparent);
+  background-size: 450px 350px;
+  animation: twinkle 5s ease-in-out infinite 1s;
+}
+
+.stars3 {
+  background-image:
+    radial-gradient(1px 1px at 80px 200px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 180px 300px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(2px 2px at 280px 150px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 380px 280px, rgba(255,255,255,0.5), transparent);
+  background-size: 400px 400px;
+  animation: twinkle 6s ease-in-out infinite 2s;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Comet */
+.comet {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(to left, transparent, rgba(255,255,255,0.8), #818cf8);
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: comet 8s linear infinite;
+  opacity: 0;
+}
+
+.comet::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #fff 0%, #818cf8 50%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(129, 140, 248, 0.6);
+}
+
+@keyframes comet {
+  0% {
+    transform: translateX(100vw) translateY(-50px) rotate(35deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  35% {
+    transform: translateX(-100vw) translateY(100vh) rotate(35deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-100vw) translateY(100vh) rotate(35deg);
+    opacity: 0;
+  }
 }
 
 /* ================================
@@ -160,7 +277,7 @@ img {
   left: 0;
   width: 0%;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-tech));
+  background: linear-gradient(90deg, #818cf8, #06b6d4, #a855f7);
   z-index: 1000;
   transition: width 100ms ease-out;
 }
@@ -183,11 +300,12 @@ img {
 }
 
 [data-theme="light"] .header {
-  background: rgba(250, 250, 249, 0.9);
+  background: rgba(240, 244, 248, 0.95);
 }
 
 [data-theme="dark"] .header {
-  background: rgba(28, 25, 23, 0.9);
+  background: rgba(10, 10, 26, 0.85);
+  border-bottom-color: rgba(129, 140, 248, 0.2);
 }
 
 .header-inner {
@@ -254,6 +372,91 @@ img {
 .nav-link:hover::after,
 .nav-link.active::after {
   width: 100%;
+}
+
+/* Dropdown Menu */
+.has-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.dropdown-open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 150px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) 0;
+  margin-top: var(--spacing-sm);
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+}
+
+.dropdown-open .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-item {
+  display: block;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+  .dropdown-menu {
+    position: static;
+    transform: none;
+    margin-top: var(--spacing-xs);
+    margin-left: var(--spacing-md);
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    opacity: 1;
+    visibility: visible;
+    display: none;
+  }
+
+  .dropdown-open .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-item {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.875rem;
+  }
 }
 
 .header-actions {

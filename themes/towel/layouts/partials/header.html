@@ -1,17 +1,31 @@
 <header class="header">
   <div class="container header-inner">
     <a href="{{ "" | relURL }}" class="logo">
-      <span class="logo-icon">🧠</span>
-      <span class="logo-text">Mindfork</span>
+      <span class="logo-icon">🚀</span>
+      <span class="logo-text">The Towel</span>
     </a>
 
     <nav class="nav" id="nav">
       <ul class="nav-list">
         {{ range .Site.Menus.main }}
-        <li class="nav-item">
+        <li class="nav-item {{ if .HasChildren }}has-dropdown{{ end }}">
+          {{ if .HasChildren }}
+          <button class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+            {{ .Name }}
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <ul class="dropdown-menu">
+            {{ range .Children }}
+            <li><a href="{{ .URL }}" class="dropdown-item">{{ .Name }}</a></li>
+            {{ end }}
+          </ul>
+          {{ else }}
           <a href="{{ .URL }}" class="nav-link {{ if $.IsMenuCurrent "main" . }}active{{ end }}">
             {{ .Name }}
           </a>
+          {{ end }}
         </li>
         {{ end }}
       </ul>

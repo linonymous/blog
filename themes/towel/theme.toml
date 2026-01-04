@@ -1,0 +1,13 @@
+# Theme metadata
+name = "The Towel"
+license = "MIT"
+licenselink = "https://github.com/linonymous/towel-theme/blob/main/LICENSE"
+description = "A space exploration themed Hugo blog - Don't Panic!"
+homepage = "https://linonymous.in"
+tags = ["blog", "space", "galaxy", "dark-mode", "responsive", "hitchhikers-guide"]
+features = ["dark-light-mode", "responsive", "syntax-highlighting", "reading-progress", "space-theme"]
+min_version = "0.121.1"
+
+[author]
+  name = "Linonymous"
+  homepage = "https://linonymous.in"
