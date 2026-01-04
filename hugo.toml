@@ -16,8 +16,6 @@ enableGitInfo = true
 [permalinks]
   tech = '/tech/:slug/'
   deep-dives = '/deep-dives/:slug/'
-  til = '/til/:slug/'
-  musings = '/musings/:slug/'
 
 [taxonomies]
   category = 'categories'
@@ -44,26 +42,24 @@ enableGitInfo = true
     url = '/deep-dives/'
     weight = 2
   [[menu.main]]
-    name = 'TIL'
-    url = '/til/'
+    name = 'Books'
+    url = '/books/'
     weight = 3
-  [[menu.main]]
-    name = 'Musings'
-    url = '/musings/'
-    weight = 4
   [[menu.main]]
     name = 'About'
     url = '#'
     weight = 5
-    hasChildren = true
-    [[menu.main.children]]
-      name = 'Blog'
-      url = '/about/blog/'
-      weight = 1
-    [[menu.main.children]]
-      name = 'Me'
-      url = '/about/me/'
-      weight = 2
+    identifier = 'about'
+  [[menu.main]]
+    name = 'Me'
+    url = '/about/me/'
+    weight = 1
+    parent = 'about'
+  [[menu.main]]
+    name = 'Blog'
+    url = '/about/blog/'
+    weight = 2
+    parent = 'about'
 
 [outputs]
   home = ['HTML', 'RSS']
