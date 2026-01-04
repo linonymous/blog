@@ -1,6 +1,8 @@
 ---
 title: "About Me"
 description: "Learn more about the author behind The Towel"
+type: "page"
+layout: "single"
 ---
 
 ## Coming Soon
