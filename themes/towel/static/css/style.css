@@ -98,10 +98,15 @@
   pointer-events: none;
   z-index: -1;
   overflow: hidden;
+  background-color: var(--color-bg);
 }
 
 [data-theme="light"] .space-bg {
   display: none;
+}
+
+[data-theme="light"] body {
+  background-color: var(--color-bg);
 }
 
 /* Stars layers */
@@ -366,6 +371,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: transparent;
 }
 
 body {
