@@ -35,26 +35,69 @@
 
   // Toggle theme on button click
   if (themeToggle) {
+    let glowInterval = null;
+    let glowTimeout = null;
+
+    // Glow cycle: 3s delay, then 6s glow, 3s pause, repeat (only in light mode)
+    function startGlowCycle() {
+      // Clear any existing timers
+      stopGlowCycle();
+
+      // Only glow in light mode
+      if (html.getAttribute('data-theme') !== 'light') {
+        return;
+      }
+
+      // Initial 3s delay before first glow
+      glowTimeout = setTimeout(function() {
+        runGlowLoop();
+      }, 3000);
+    }
+
+    function runGlowLoop() {
+      // Check if still in light mode
+      if (html.getAttribute('data-theme') !== 'light') {
+        stopGlowCycle();
+        return;
+      }
+
+      // Start glowing for 6 seconds
+      themeToggle.classList.add('glow-hint');
+
+      glowTimeout = setTimeout(function() {
+        themeToggle.classList.remove('glow-hint');
+
+        // Pause for 3 seconds, then repeat
+        glowTimeout = setTimeout(function() {
+          runGlowLoop();
+        }, 3000);
+      }, 6000);
+    }
+
+    function stopGlowCycle() {
+      if (glowTimeout) {
+        clearTimeout(glowTimeout);
+        glowTimeout = null;
+      }
+      themeToggle.classList.remove('glow-hint');
+    }
+
     themeToggle.addEventListener('click', function() {
       const currentTheme = html.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       setTheme(newTheme);
 
-      // Stop glow animation when user clicks the toggle
-      themeToggle.classList.remove('glow-hint');
-      localStorage.setItem('towel-theme-hint-shown', 'true');
+      // Stop glow when switching to dark, restart cycle when switching to light
+      if (newTheme === 'dark') {
+        stopGlowCycle();
+      } else {
+        startGlowCycle();
+      }
     });
 
-    // Show glow hint for first-time visitors (10 seconds)
-    const hintShown = localStorage.getItem('towel-theme-hint-shown');
-    if (!hintShown) {
-      themeToggle.classList.add('glow-hint');
-
-      // Remove glow after 10 seconds
-      setTimeout(function() {
-        themeToggle.classList.remove('glow-hint');
-        localStorage.setItem('towel-theme-hint-shown', 'true');
-      }, 10000);
+    // Start glow cycle if in light mode on page load
+    if (html.getAttribute('data-theme') === 'light') {
+      startGlowCycle();
     }
   }
 
