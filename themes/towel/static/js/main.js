@@ -14,14 +14,14 @@
   const themeToggle = document.getElementById('theme-toggle');
   const html = document.documentElement;
 
-  // Get stored theme or default to dark (space theme)
+  // Get stored theme or default to light
   function getPreferredTheme() {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored) {
       return stored;
     }
-    // Default to dark mode for the space theme
-    return 'dark';
+    // Default to light mode
+    return 'light';
   }
 
   // Apply theme
@@ -39,7 +39,23 @@
       const currentTheme = html.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       setTheme(newTheme);
+
+      // Stop glow animation when user clicks the toggle
+      themeToggle.classList.remove('glow-hint');
+      localStorage.setItem('towel-theme-hint-shown', 'true');
     });
+
+    // Show glow hint for first-time visitors (10 seconds)
+    const hintShown = localStorage.getItem('towel-theme-hint-shown');
+    if (!hintShown) {
+      themeToggle.classList.add('glow-hint');
+
+      // Remove glow after 10 seconds
+      setTimeout(function() {
+        themeToggle.classList.remove('glow-hint');
+        localStorage.setItem('towel-theme-hint-shown', 'true');
+      }, 10000);
+    }
   }
 
   // Listen for system theme changes
