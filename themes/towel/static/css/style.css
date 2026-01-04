@@ -811,7 +811,7 @@ img {
 }
 
 [data-theme="light"] .category-card {
-  background: var(--color-bg-secondary);
+  background: var(--color-bg-secondary) !important;
   backdrop-filter: none;
 }
 
@@ -873,7 +873,7 @@ img {
 }
 
 [data-theme="light"] .post-card {
-  background: var(--color-bg);
+  background: var(--color-bg) !important;
   backdrop-filter: none;
 }
 
@@ -1283,7 +1283,7 @@ img {
 }
 
 [data-theme="light"] .footer {
-  background: var(--color-bg-secondary);
+  background: var(--color-bg-secondary) !important;
   backdrop-filter: none;
 }
 
