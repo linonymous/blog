@@ -92,7 +92,7 @@ Complete rebranding of the blog with a Hitchhiker's Guide to the Galaxy inspired
 ---
 
 ### 7. Fix comet and About dropdown
-**Commit:** *(current session)*
+**Commit:** `93d88d3`
 **Author:** Claude
 **Date:** 2026-01-04
 
@@ -104,6 +104,23 @@ Improvements to the space theme and navigation.
 - Different trajectories and timing for visual variety
 - Fix About dropdown menu by using Hugo's proper `identifier`/`parent` menu structure
 - Dropdown now correctly shows "Me" and "Blog" sub-sections
+
+---
+
+### 8. Update README and restructure sections
+**Commit:** *(current session)*
+**Author:** Claude
+**Date:** 2026-01-04
+
+Restructure blog sections and update documentation.
+
+**Changes:**
+- Update README.md with "The Towel" branding
+- Remove TIL and Musings sections from navigation, homepage, and footer
+- Add new Books section as a single page with yearly reading list
+- Create Books page layout with year-based organization
+- Update CSS to replace TIL/Musings colors with Books (emerald green)
+- Remove unused TIL and Musings content folders
 
 ---
 

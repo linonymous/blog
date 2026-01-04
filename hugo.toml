@@ -16,8 +16,6 @@ enableGitInfo = true
 [permalinks]
   tech = '/tech/:slug/'
   deep-dives = '/deep-dives/:slug/'
-  til = '/til/:slug/'
-  musings = '/musings/:slug/'
 
 [taxonomies]
   category = 'categories'
@@ -44,13 +42,9 @@ enableGitInfo = true
     url = '/deep-dives/'
     weight = 2
   [[menu.main]]
-    name = 'TIL'
-    url = '/til/'
+    name = 'Books'
+    url = '/books/'
     weight = 3
-  [[menu.main]]
-    name = 'Musings'
-    url = '/musings/'
-    weight = 4
   [[menu.main]]
     name = 'About'
     url = '#'

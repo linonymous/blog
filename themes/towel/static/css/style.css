@@ -24,10 +24,8 @@
   --color-tech-light: #cffafe;
   --color-deep-dives: #a855f7;
   --color-deep-dives-light: #f3e8ff;
-  --color-til: #f59e0b;
-  --color-til-light: #fef3c7;
-  --color-musings: #ec4899;
-  --color-musings-light: #fce7f3;
+  --color-books: #10b981;
+  --color-books-light: #d1fae5;
 
   /* Typography */
   --font-display: 'JetBrains Mono', monospace;
@@ -80,8 +78,7 @@
 
   --color-tech-light: #164e63;
   --color-deep-dives-light: #581c87;
-  --color-til-light: #78350f;
-  --color-musings-light: #831843;
+  --color-books-light: #064e3b;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
@@ -758,8 +755,7 @@ img {
 
 .category-tech:hover { border-color: var(--color-tech); }
 .category-deep-dives:hover { border-color: var(--color-deep-dives); }
-.category-til:hover { border-color: var(--color-til); }
-.category-musings:hover { border-color: var(--color-musings); }
+.category-books:hover { border-color: var(--color-books); }
 
 /* ================================
    Posts Section
@@ -824,14 +820,9 @@ img {
   color: var(--color-deep-dives);
 }
 
-.post-category-til {
-  background: var(--color-til-light);
-  color: var(--color-til);
-}
-
-.post-category-musings {
-  background: var(--color-musings-light);
-  color: var(--color-musings);
+.post-category-books {
+  background: var(--color-books-light);
+  color: var(--color-books);
 }
 
 .post-card-title {
@@ -917,8 +908,7 @@ img {
 
 .section-header-tech { border-bottom-color: var(--color-tech); }
 .section-header-deep-dives { border-bottom-color: var(--color-deep-dives); }
-.section-header-til { border-bottom-color: var(--color-til); }
-.section-header-musings { border-bottom-color: var(--color-musings); }
+.section-header-books { border-bottom-color: var(--color-books); }
 
 .posts-list {
   padding: var(--spacing-3xl) 0;
@@ -970,14 +960,9 @@ img {
   color: var(--color-deep-dives);
 }
 
-.article-category-til {
-  background: var(--color-til-light);
-  color: var(--color-til);
-}
-
-.article-category-musings {
-  background: var(--color-musings-light);
-  color: var(--color-musings);
+.article-category-books {
+  background: var(--color-books-light);
+  color: var(--color-books);
 }
 
 .article-title {

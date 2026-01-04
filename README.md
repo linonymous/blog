@@ -1,8 +1,8 @@
-# Mindfork Blog
+# The Towel
 
 > I write, so that I may learn.
 
-This is migration of existing linonymous.in blog to github pages, all entirely using ClaudeCode.
+A personal blog about distributed systems, databases, and backend engineering. Hosted on GitHub Pages.
 
 ## Quick Start
 
@@ -32,12 +32,6 @@ hugo new tech/my-new-post.md
 
 # Deep dive
 hugo new deep-dives/paper-review.md
-
-# Quick TIL
-hugo new til/learned-something.md
-
-# Personal musing
-hugo new musings/thoughts.md
 ```
 
 Edit the file, set `draft: false` when ready, then commit and push.
@@ -50,22 +44,20 @@ Edit the file, set `draft: false` when ready, then commit and push.
 ├── content/
 │   ├── tech/            # Technical articles
 │   ├── deep-dives/      # Long-form paper reviews
-│   ├── til/             # Today I Learned snippets
-│   ├── musings/         # Personal reflections
-│   └── about/           # About page
-├── themes/mindfork/     # Custom theme
+│   ├── books/           # Reading list by year
+│   └── about/           # About pages
+├── themes/towel/        # Custom theme
 ├── static/CNAME         # Custom domain config
 └── hugo.toml            # Site configuration
 ```
 
-## Categories
+## Sections
 
-| Category | Description |
-|----------|-------------|
+| Section | Description |
+|---------|-------------|
 | **Tech** | System design, backend engineering, databases, and code |
 | **Deep Dives** | Long-form paper reviews and architecture explorations |
-| **TIL** | Today I Learned — quick daily snippets |
-| **Musings** | Personal reflections, career thoughts |
+| **Books** | Reading list organized by year |
 
 ## Deployment
 
@@ -93,7 +85,7 @@ CNAME   www     linonymous.github.io
 - **Responsive Design**: Mobile-first approach
 - **Reading Progress Bar**: Visual progress indicator for articles
 - **Syntax Highlighting**: Dracula theme with copy button
-- **Category Colors**: Distinct visual identity for each category
+- **Space Theme**: Animated stars and comets background
 - **SEO Optimized**: Open Graph and Twitter Card meta tags
 
 ## License
