@@ -61,20 +61,6 @@ Edit the file, set `draft: false` when ready, then commit and push.
 
 The site auto-deploys to GitHub Pages on push to `main` via GitHub Actions.
 
-### Custom Domain Setup
-
-1. The `CNAME` file in `/static/` contains `linonymous.in`
-2. Configure DNS at your registrar:
-
-```
-Type    Name    Value
-A       @       185.199.108.153
-A       @       185.199.109.153
-A       @       185.199.110.153
-A       @       185.199.111.153
-CNAME   www     linonymous.github.io
-```
-
 3. Enable HTTPS in GitHub Pages settings
 
 ## Theme Features
