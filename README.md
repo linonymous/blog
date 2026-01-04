@@ -1,6 +1,6 @@
 # The Towel
 
-A personal blog about distributed systems, databases, and backend engineering. Hosted on GitHub Pages.
+(Migration of old blogspot based blog to github pages) A personal blog about distributed systems, databases, and backend engineering. Hosted on GitHub Pages.
 
 ## Quick Start
 
