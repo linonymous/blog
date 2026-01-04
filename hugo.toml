@@ -1,0 +1,65 @@
+baseURL = 'https://linonymous.in/'
+languageCode = 'en-us'
+title = 'Mindfork'
+theme = 'mindfork'
+paginate = 10
+enableRobotsTXT = true
+enableGitInfo = true
+
+[params]
+  description = "I write, so that I may learn."
+  author = "Linonymous"
+  tagline = "I write, so that I may learn."
+  twitter = "Iinonymous"
+  github = "linonymous"
+
+[permalinks]
+  tech = '/tech/:slug/'
+  deep-dives = '/deep-dives/:slug/'
+  til = '/til/:slug/'
+  musings = '/musings/:slug/'
+
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+  series = 'series'
+
+[markup]
+  [markup.highlight]
+    style = 'dracula'
+    lineNos = false
+    codeFences = true
+    guessSyntax = true
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[menu]
+  [[menu.main]]
+    name = 'Tech'
+    url = '/tech/'
+    weight = 1
+  [[menu.main]]
+    name = 'Deep Dives'
+    url = '/deep-dives/'
+    weight = 2
+  [[menu.main]]
+    name = 'TIL'
+    url = '/til/'
+    weight = 3
+  [[menu.main]]
+    name = 'Musings'
+    url = '/musings/'
+    weight = 4
+  [[menu.main]]
+    name = 'About'
+    url = '/about/'
+    weight = 5
+
+[outputs]
+  home = ['HTML', 'RSS']
+  section = ['HTML', 'RSS']
+
+[sitemap]
+  changefreq = 'weekly'
+  priority = 0.5
