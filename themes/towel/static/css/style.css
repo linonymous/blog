@@ -646,6 +646,26 @@ img {
 [data-theme="dark"] .icon-sun { display: none; }
 [data-theme="dark"] .icon-moon { display: block; }
 
+/* Theme toggle glow animation for first-time visitors */
+@keyframes theme-toggle-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--color-accent),
+                0 0 10px var(--color-accent),
+                0 0 20px var(--color-accent);
+  }
+  50% {
+    box-shadow: 0 0 10px var(--color-accent),
+                0 0 20px var(--color-accent),
+                0 0 40px var(--color-accent),
+                0 0 60px var(--color-accent);
+  }
+}
+
+.theme-toggle.glow-hint {
+  animation: theme-toggle-glow 1.5s ease-in-out infinite;
+  border: 2px solid var(--color-accent);
+}
+
 .menu-toggle {
   display: none;
 }
