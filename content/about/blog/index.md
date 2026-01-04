@@ -1,6 +1,8 @@
 ---
 title: "About This Blog"
 description: "Why The Towel? A tribute to the most massively useful thing an interstellar hitchhiker can have."
+type: "page"
+layout: "single"
 ---
 
 ## The Towel
