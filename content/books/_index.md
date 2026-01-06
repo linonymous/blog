@@ -10,6 +10,7 @@ layout: "books"
 |------|--------|
 | [Total Freedom](https://www.goodreads.com/book/show/143878.Total_Freedom) | J. Krishnamurti |
 | [Kafka on the Shore](https://www.goodreads.com/book/show/4929.Kafka_on_the_Shore) | Haruki Murakami |
+| [Science of Strength Training](https://www.goodreads.com/book/show/55711449-science-of-strength-training) | Austin Current |
 
 ---
 
