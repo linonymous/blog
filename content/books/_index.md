@@ -8,8 +8,8 @@ layout: "books"
 
 | Book | Author |
 |------|--------|
+| [Days at the Morisaki Bookshop](https://www.goodreads.com/book/show/59503610-days-at-the-morisaki-bookshop) | Satoshi Yagisawa |
 | [Total Freedom](https://www.goodreads.com/book/show/143878.Total_Freedom) | J. Krishnamurti |
-| [Kafka on the Shore](https://www.goodreads.com/book/show/4929.Kafka_on_the_Shore) | Haruki Murakami |
 | [Science of Strength Training](https://www.goodreads.com/book/show/55711449-science-of-strength-training) | Austin Current |
 
 ---
@@ -20,6 +20,8 @@ layout: "books"
 
 | Book | Author |
 |------|--------|
+| [Kafka on the Shore](https://www.goodreads.com/book/show/4929.Kafka_on_the_Shore) | Haruki Murakami |
+| [Murder on the Orient Express](https://www.goodreads.com/book/show/853510.Murder_on_the_Orient_Express) | Agatha Christie |
 | [Atmamun](https://www.amazon.com/Atmamun-achieving-Himalayan-Swamis-freedom/dp/1532762720) | Kapil Gupta |
 | [Norwegian Wood](https://www.goodreads.com/book/show/11297.Norwegian_Wood) | Haruki Murakami |
 | [The Hitchhiker's Guide to the Galaxy Volume 1](https://www.goodreads.com/book/show/386162.The_Hitchhiker_s_Guide_to_the_Galaxy) | Douglas Adams |
